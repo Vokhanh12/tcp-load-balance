@@ -1,31 +1,65 @@
-# A TCP Server/Client in Go #
+# A TCP Server/Client/load-balance in Go #
 
-I know, I know, there are a million of these things out there now. Well, now
-there are a million and one.
+This is the client-server load balancing process. Here, I create a server (load balancer) in between to distribute the load among the servers behind it and solve problems returning results to the client.
 
-I've wanted to learn Go for some time now, and while on a long holiday it felt
-like the right time. Because the network libraries seemed so straightforward, I
-thought I'd take a crack at a legitimate TCP client/server thing.
 
-This project is useless for anything but demonstration, so enjoy, don't consider
-it to be idiomatic or well-written, but it does work. It manages error states
-fairly well, which is to say it should never panic.
+The problem-solving task:
+
+
+![baitoan](https://github.com/Vokhanh12/tcp-load-balance-client-server/assets/36543564/c2bed836-e9b6-4307-8910-28e49e9f353d)
+
+
+Modles:
+
+
+![image](https://github.com/Vokhanh12/tcp-load-balance-client-server/assets/36543564/065c9b84-6340-4679-b6b5-bcbfd80ff5d5)
+
+
+![image](https://github.com/Vokhanh12/tcp-load-balance-client-server/assets/36543564/2e204417-e37e-4b67-a10d-b383a79f5219)
+
+
+
 
 # Usage #
 
 Hey, look, it uses `flag`, how quaint!
 
-Run the server like so:
+Run the servers like so:
 
-`go run server.go -port 8000`
+```bash
+ ~/server-8000   
+go run server.go -port 8000
+
+
+ ~/server-8001   
+go run server.go -port 8001
+
+
+ ~/server-8002   
+go run server.go -port 8002
+
+
+ ~/server-8003   
+go run server.go -port 8003
+```
+
+
+Run the load balance server like so:
+
+```bash
+~/load-balance
+go run server.go -port 9999
+```
+
 
 And then connect to it with the client like so:
 
-`go run client.go -host localhost -port 8000`
 
-The command line arguments shown are the default values, you can omit them to
-connect to localhost on port 8000. Or, of course, you can connect to some other
-host where the server is running.
+```bash
+go run client.go -host localhost -port 9999
+```
+
+
 
 # License #
 
